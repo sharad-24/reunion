@@ -28,6 +28,7 @@ export default function Home() {
     const [inputTextPrice, setInputTextPrice] = useState("");
     const [inputTextLocation, setInputTextLocation] = useState("");
     const [inputTextType, setInputTextType] = useState("");
+    const [inputTextDate, setInputTextDate] = useState("");
     const [filterData, setFilterData] = useState(data);
 
     let inputHandlerName = (e) => {
@@ -42,6 +43,9 @@ export default function Home() {
     };
     let inputHandlerType = (e) => {
         setInputTextType(e.target.value);
+    };
+    let inputHandlerDate = (e) => {
+        setInputTextDate(e.target.value);
     };
 
     const filteredDataPrice = (data, filterPrice) => {
@@ -83,20 +87,31 @@ export default function Home() {
             return data?.filter((ep) => ep.name.toString().includes(filterName))
         }
     }
-    
-    const filterDataFunction = (data, filterPrice = "", filterLocation = "", filterType = "", filterName = "") => {
+
+    const filteredDataDate = (data, filterDate) => {
+        console.log({ filterDate })
+        if (!filterDate) {
+            return data;
+        } else {
+            // console.log("filter: ",data?.filter((ep) => ep.price.toString().includes(filterPrice)))
+            return data?.filter((ep) => ep.date.toString().includes(filterDate))
+        }
+    }
+
+    const filterDataFunction = (data, filterPrice = "", filterLocation = "", filterType = "", filterName = "", filterDate = "") => {
         let dataAfterFilter = filteredDataPrice(data, filterPrice);
         dataAfterFilter = filteredDataLocation(dataAfterFilter, filterLocation);
         dataAfterFilter = filteredDataType(dataAfterFilter, filterType);
         dataAfterFilter = filteredDataName(dataAfterFilter, filterName);
+        dataAfterFilter = filteredDataDate(dataAfterFilter, filterDate);
         setFilterData(dataAfterFilter)
     }
 
     useEffect(() => {
 
-        filterDataFunction(data, inputTextPrice, inputTextLocation, inputTextType, inputTextName)
+        filterDataFunction(data, inputTextPrice, inputTextLocation, inputTextType, inputTextName, inputTextDate)
 
-    }, [inputTextPrice, inputTextLocation, inputTextType, inputTextName])
+    }, [inputTextPrice, inputTextLocation, inputTextType, inputTextName, inputTextDate])
 
     // console.log(data);
     return (
@@ -124,7 +139,8 @@ export default function Home() {
                         <TextField
                             id="outlined-basic"
                             variant="outlined"
-                            label="When"
+                            type="date"
+                            onChange={inputHandlerDate}
                         />
                     </div>
                     <div>
@@ -132,6 +148,7 @@ export default function Home() {
                             id="outlined-basic"
                             variant="outlined"
                             label="Price"
+                            type="number"
                             onChange={inputHandlerPrice}
                         />
                     </div>
@@ -144,7 +161,7 @@ export default function Home() {
                         />
                     </div>
                     <div className='mt-2'>
-                        <Button variant="contained" color="primary" onClick={() => filterDataFunction(data, inputTextPrice, inputTextLocation, inputTextType)} >
+                        <Button variant="contained" color="primary" onClick={() => filterDataFunction(data, inputTextPrice, inputTextLocation, inputTextType, inputTextDate)} >
                             Search
                         </Button>
                     </div>
@@ -174,6 +191,9 @@ export default function Home() {
                                     </h1>
                                     <Typography variant="body2" color="textSecondary" component="p">
                                         {item.description}
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary" component="p" className='pt-3'>
+                                        {item.date}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>

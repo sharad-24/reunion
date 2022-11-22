@@ -10,7 +10,8 @@ export const data = [
         "bathroom": 3,
         "member": 2,
         "bed": 2,
-        "type": "House"
+        "type": "House",
+        "date": "2022-11-09"
         
     }, 
     {
@@ -24,7 +25,8 @@ export const data = [
         "bathroom": 3,
         "member": 2,
         "bed": 2,
-        "type": "Vila"
+        "type": "Vila",
+        "date": "2022-11-09"
         
     }, 
     {
@@ -38,7 +40,8 @@ export const data = [
         "bathroom": 3,
         "member": 2,
         "bed": 2,
-        "type": "House"
+        "type": "House",
+        "date": "2022-11-09"
         
     }, 
     {
@@ -52,7 +55,8 @@ export const data = [
         "bathroom": 3,
         "member": 2,
         "bed": 2,
-        "type": "House"
+        "type": "House",
+        "date": "2022-11-09"
         
     }, 
     {
@@ -66,7 +70,8 @@ export const data = [
         "bathroom": 3,
         "member": 2,
         "bed": 2,
-        "type": "House"
+        "type": "House",
+        "date": "2022-11-09"
         
     }, 
     {
@@ -80,7 +85,8 @@ export const data = [
         "bathroom": 3,
         "member": 2,
         "bed": 2,
-        "type": "House"
+        "type": "House",
+        "date": "2022-11-09"
         
     }, 
     {
@@ -94,7 +100,8 @@ export const data = [
         "bathroom": 3,
         "member": 2,
         "bed": 2,
-        "type": "House"
+        "type": "House",
+        "date": "2022-11-09"
         
     }, 
     {
@@ -108,7 +115,8 @@ export const data = [
         "bathroom": 3,
         "member": 2,
         "bed": 2,
-        "type": "House"
+        "type": "House",
+        "date": "2022-11-09"
         
     }, 
 
