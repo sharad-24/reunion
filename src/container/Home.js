@@ -64,7 +64,7 @@ export default function Home() {
             return data;
         } else {
             //   console.log("location filter: ",data?.filter((ep) => ep.location.toString().includes(location)))
-            return data?.filter((ep) => ep.location.toLowerCase().includes(location))
+            return data?.filter((ep) => ep.location.toLowerCase().includes(location.toLowerCase()))
         }
     }
 
@@ -74,7 +74,7 @@ export default function Home() {
             return data;
         } else {
             //   console.log("location filter: ",data?.filter((ep) => ep.location.toString().includes(location)))
-            return data?.filter((ep) => ep.type.toLowerCase().includes(type))
+            return data?.filter((ep) => ep.type.toLowerCase().includes(type.toLowerCase()))
         }
     }
 
@@ -84,7 +84,7 @@ export default function Home() {
             return data;
         } else {
             // console.log("filter: ",data?.filter((ep) => ep.price.toString().includes(filterPrice)))
-            return data?.filter((ep) => ep.name.toLowerCase().includes(filterName))
+            return data?.filter((ep) => ep.name.toLowerCase().includes(filterName.toLowerCase()))
         }
     }
 
@@ -106,6 +106,14 @@ export default function Home() {
         setFilterData(dataAfterFilter)
     }
 
+    const clearState = (data) => {
+        setFilterData(data)
+        setInputTextPrice("")
+        setInputTextDate("")
+        setInputTextLocation("")
+        setInputTextType("")
+    }
+
     const filterDataFunctionName = (data, filterName = "") => {
         let dataAfterFilter = filteredDataName(data, filterName);
         setFilterData(dataAfterFilter)
@@ -125,7 +133,7 @@ export default function Home() {
                 <TextField
                     id="outlined-basic"
                     variant="outlined"
-                    label="Search"
+                    label="Search by name"
                     onChange={inputHandlerName}
                 />
             </div>
@@ -134,12 +142,13 @@ export default function Home() {
                     event.preventDefault()
                     filterDataFunction(data, inputTextPrice, inputTextLocation, inputTextType, inputTextDate)
                 }}>
-                    <div className='flex justify-between p-3'>
+                    <div className='block md:flex justify-between p-3'>
                         <div>
                             <TextField
                                 id="outlined-basic"
                                 variant="outlined"
                                 label="Location"
+                                value={inputTextLocation}
                                 onChange={inputHandlerLocation}
                                 required
                             />
@@ -149,6 +158,7 @@ export default function Home() {
                                 id="outlined-basic"
                                 variant="outlined"
                                 type="date"
+                                value={inputTextDate}
                                 onChange={inputHandlerDate}
                                 required
                             />
@@ -159,6 +169,7 @@ export default function Home() {
                                 variant="outlined"
                                 label="Price"
                                 type="number"
+                                value={inputTextPrice}
                                 onChange={inputHandlerPrice}
                                 required
                             />
@@ -168,6 +179,7 @@ export default function Home() {
                                 id="outlined-basic"
                                 variant="outlined"
                                 label="Property Type"
+                                value={inputTextType}
                                 onChange={inputHandlerType}
                                 required
                             />
@@ -178,7 +190,7 @@ export default function Home() {
                             </Button>
                         </div>
                         <div className='mt-2'>
-                            <Button variant="contained" color="warning" onClick={() => filterDataFunction(data)}>Clear</Button>
+                            <Button variant="contained" color="warning" onClick={() => clearState(data)}>Clear</Button>
                         </div>
                     </div>
                 </form>
