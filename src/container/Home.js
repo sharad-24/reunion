@@ -1,4 +1,4 @@
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField, Box } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { data } from '../JsonData/Data';
 import Card from '@material-ui/core/Card';
@@ -49,7 +49,7 @@ export default function Home() {
     };
 
     const filteredDataPrice = (data, filterPrice) => {
-        console.log({ filterPrice })
+        // console.log({ filterPrice })
         if (!filterPrice) {
             return data;
         } else {
@@ -59,37 +59,37 @@ export default function Home() {
     }
 
     const filteredDataLocation = (data, location) => {
-        console.log({ location })
+        // console.log({ location })
         if (!location) {
             return data;
         } else {
             //   console.log("location filter: ",data?.filter((ep) => ep.location.toString().includes(location)))
-            return data?.filter((ep) => ep.description.toString().includes(location))
+            return data?.filter((ep) => ep.location.toLowerCase().includes(location))
         }
     }
 
     const filteredDataType = (data, type) => {
-        console.log({ type })
+        // console.log({ type })
         if (!type) {
             return data;
         } else {
             //   console.log("location filter: ",data?.filter((ep) => ep.location.toString().includes(location)))
-            return data?.filter((ep) => ep.type.toString().includes(type))
+            return data?.filter((ep) => ep.type.toLowerCase().includes(type))
         }
     }
 
     const filteredDataName = (data, filterName) => {
-        console.log({ filterName })
+        // console.log({ filterName })
         if (!filterName) {
             return data;
         } else {
             // console.log("filter: ",data?.filter((ep) => ep.price.toString().includes(filterPrice)))
-            return data?.filter((ep) => ep.name.toString().includes(filterName))
+            return data?.filter((ep) => ep.name.toLowerCase().includes(filterName))
         }
     }
 
     const filteredDataDate = (data, filterDate) => {
-        console.log({ filterDate })
+        // console.log({ filterDate })
         if (!filterDate) {
             return data;
         } else {
@@ -98,20 +98,24 @@ export default function Home() {
         }
     }
 
-    const filterDataFunction = (data, filterPrice = "", filterLocation = "", filterType = "", filterName = "", filterDate = "") => {
+    const filterDataFunction = (data, filterPrice = "", filterLocation = "", filterType = "", filterDate = "") => {
         let dataAfterFilter = filteredDataPrice(data, filterPrice);
         dataAfterFilter = filteredDataLocation(dataAfterFilter, filterLocation);
         dataAfterFilter = filteredDataType(dataAfterFilter, filterType);
-        dataAfterFilter = filteredDataName(dataAfterFilter, filterName);
         dataAfterFilter = filteredDataDate(dataAfterFilter, filterDate);
+        setFilterData(dataAfterFilter)
+    }
+
+    const filterDataFunctionName = (data, filterName = "") => {
+        let dataAfterFilter = filteredDataName(data, filterName);
         setFilterData(dataAfterFilter)
     }
 
     useEffect(() => {
 
-        filterDataFunction(data, inputTextPrice, inputTextLocation, inputTextType, inputTextName, inputTextDate)
+        filterDataFunctionName(data, inputTextName)
 
-    }, [inputTextPrice, inputTextLocation, inputTextType, inputTextName, inputTextDate])
+    }, [inputTextName])
 
     // console.log(data);
     return (
@@ -126,49 +130,61 @@ export default function Home() {
                 />
             </div>
             <div className='bg-white mt-10'>
-                <div className='flex justify-between p-3'>
-                    <div>
-                        <TextField
-                            id="outlined-basic"
-                            variant="outlined"
-                            label="Location"
-                            onChange={inputHandlerLocation}
-                        />
+                <form onSubmit={(event) => {
+                    event.preventDefault()
+                    filterDataFunction(data, inputTextPrice, inputTextLocation, inputTextType, inputTextDate)
+                }}>
+                    <div className='flex justify-between p-3'>
+                        <div>
+                            <TextField
+                                id="outlined-basic"
+                                variant="outlined"
+                                label="Location"
+                                onChange={inputHandlerLocation}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <TextField
+                                id="outlined-basic"
+                                variant="outlined"
+                                type="date"
+                                onChange={inputHandlerDate}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <TextField
+                                id="outlined-basic"
+                                variant="outlined"
+                                label="Price"
+                                type="number"
+                                onChange={inputHandlerPrice}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <TextField
+                                id="outlined-basic"
+                                variant="outlined"
+                                label="Property Type"
+                                onChange={inputHandlerType}
+                                required
+                            />
+                        </div>
+                        <div className='mt-2'>
+                            <Button variant="contained" color="primary" type="submit" >
+                                Search
+                            </Button>
+                        </div>
+                        <div className='mt-2'>
+                            <Button variant="contained" color="warning" onClick={() => filterDataFunction(data)}>Clear</Button>
+                        </div>
                     </div>
-                    <div>
-                        <TextField
-                            id="outlined-basic"
-                            variant="outlined"
-                            type="date"
-                            onChange={inputHandlerDate}
-                        />
-                    </div>
-                    <div>
-                        <TextField
-                            id="outlined-basic"
-                            variant="outlined"
-                            label="Price"
-                            type="number"
-                            onChange={inputHandlerPrice}
-                        />
-                    </div>
-                    <div>
-                        <TextField
-                            id="outlined-basic"
-                            variant="outlined"
-                            label="Property Type"
-                            onChange={inputHandlerType}
-                        />
-                    </div>
-                    <div className='mt-2'>
-                        <Button variant="contained" color="primary" onClick={() => filterDataFunction(data, inputTextPrice, inputTextLocation, inputTextType, inputTextDate)} >
-                            Search
-                        </Button>
-                    </div>
-
-                </div>
-
+                </form>
             </div>
+
+
             <Grid container>
                 {filterData?.map((item) => (
                     <Grid item xs={12} md={4} lg={4} className="p-5">
@@ -190,7 +206,7 @@ export default function Home() {
                                         {item.name}-<h1 className='text-xl pb-3 inline text-gray-500'>{item.type}</h1>
                                     </h1>
                                     <Typography variant="body2" color="textSecondary" component="p">
-                                        {item.description}
+                                        {item.location}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary" component="p" className='pt-3'>
                                         {item.date}
